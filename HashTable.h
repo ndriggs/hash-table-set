@@ -2,19 +2,20 @@
 
 #include <iostream>
 #include <list>
+#include "string"
 
 using namespace std;
 
 class HashTable {
 private :
     list<int> *htable;
-    int *sizes; //stores the size of each bin in the hashtable
     
-    int getHashCode(int data); //converts the data into the hashcode
-    //int getIndex(long hashCode); //mods the hash code to get the correct index
     const int defaultSize = 10;
     int numBins;
     void clear();
+    double loadFactor();
+    void checkRehash(bool addOrSubtract);
+    int newItemsInserted;
     
 public :
     HashTable();
