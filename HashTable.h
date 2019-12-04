@@ -10,15 +10,14 @@ class HashTable {
 private :
     list<int> *htable;
     
-    const int defaultSize = 10;
-    int numBins;
+    int tableSize;
     void clear();
     double loadFactor();
     void checkRehash(bool addOrSubtract);
     int newItemsInserted;
     
 public :
-    HashTable();
+    
     HashTable(int size);
     ~HashTable();
     

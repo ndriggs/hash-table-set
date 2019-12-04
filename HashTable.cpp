@@ -3,13 +3,10 @@
 
 using namespace std;
 
-HashTable::HashTable(){
-    htable = new list<int>[defaultSize];
-}
 
 HashTable::HashTable(int size){
     htable = new list<int>[size];
-    sizes = new int[size];
+    tableSize = size;
 }
 
 HashTable::~HashTable(){
@@ -19,14 +16,16 @@ HashTable::~HashTable(){
 // returns the number of items in the set
 int HashTable::size(){
     int size = 0;
-    for(int i : htable)
+    for(int i = 0; i < tableSize; i++)
         size += htable[i].size();
     return size;
 } 
 
+
+
 // returns true if the integer "data" is in the set and false otherwise
 bool HashTable::find(int data){
-    int index = data % numBins;
+    int index = data % tableSize;
     for(list<int>::iterator it = htable[index].begin(); it != htable[index].end(); ++it){
         if(*it == data)
             return true;
@@ -35,14 +34,14 @@ bool HashTable::find(int data){
 } 
 
 double HashTable::loadFactor(){
-    return double(size())/numBins;
+    return double(size())/tableSize;
 }
 
 // inserts the integer "data" into the set if that integer is not already in the set
 // if the integer "data" is already in the set, the integer should not be inserted
 // return true if the function adds the integer to the set, and false otherwise
 bool HashTable::insert(int data){
-    int index = data % numBins;
+    int index = data % tableSize;
     
     //first duplicate check
     for(list<int>::iterator it = htable[index].begin(); it != htable[index].end(); ++it){
@@ -54,7 +53,7 @@ bool HashTable::insert(int data){
     htable[index].push_back(data);
     
     //now let's check and see if we need to rehash
-    checkRehash(true);
+    //checkRehash(true);
     
     return true;
 } 
@@ -62,18 +61,18 @@ bool HashTable::insert(int data){
 // erases the integer "data" from the set if it is in the set
 // return true if the function removes the integer from the set, and false otherwise
 bool HashTable::erase(int data){
-    int index = data % numBins;
+    int index = data % tableSize;
     
     //first find our item
     for(list<int>::iterator it = htable[index].begin(); it != htable[index].end(); ++it){
         if(*it == data){
             htable[index].erase(it);
-            checkRehash(false);
+            //checkRehash(false);
             return true;
         }
     }
     //now let's check and see if we need to rehash
-    checkRehash();
+    //checkRehash();
     
     return false;
 }
